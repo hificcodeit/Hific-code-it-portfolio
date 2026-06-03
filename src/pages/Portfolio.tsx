@@ -20,6 +20,14 @@ const Portfolio: React.FC = () => {
 
   const projects = [
     {
+      title: "Kala Agalya Herbals",
+      category: "E-Commerce & Brand Website",
+      description: "A full-fledged e-commerce platform for a premium herbal hair oil brand — built with seamless shopping, brand storytelling, and a clean mobile-first design.",
+      image: "/images/portfolio/kala-agalya.jpg", // REPLACE IN public/images/portfolio/
+      link: "https://www.kalaagalyaherbals.in/",
+      tags: ["E-Commerce", "React", "Mobile-First"]
+    },
+    {
       title: "Local Business Landing Page",
       category: "Web Development (Demo)",
       description: "A conversion-focused landing page for small local businesses. Designed for speed and lead generation.",
