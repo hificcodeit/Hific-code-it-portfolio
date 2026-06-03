@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet-async';
 
 /**
  * Home Page Component
- * Main landing page for hifi_codeit student startup.
+ * Main landing page for hifi_codeit — a team of web experts.
  */
 const Home: React.FC = () => {
   // Animation for sections
@@ -43,12 +43,12 @@ const Home: React.FC = () => {
     <>
       <Helmet>
         <title>hifi_codeit | We Design. We Code. You Grow.</title>
-        <meta name="description" content="A student-led startup offering web development, design, and SEO services for businesses and student projects." />
+        <meta name="description" content="A team of web experts offering web development, design, and SEO services for businesses and growing brands." />
       </Helmet>
 
       {/* Hero Section - The First Impression */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-        {/* Visual elements for the "Student/Modern" feel */}
+        {/* Visual elements for the modern feel */}
         <div className="absolute inset-0 z-0">
           <div className="absolute top-1/4 -left-20 w-80 h-80 bg-purple-600/15 rounded-full blur-[120px] animate-pulse"></div>
           <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px]"></div>
@@ -66,7 +66,7 @@ const Home: React.FC = () => {
                 variants={textFadeVariants}
                 className="inline-block px-4 py-1.5 bg-zinc-900 border border-zinc-800 rounded-full text-xs font-black uppercase tracking-widest text-purple-500 mb-2"
               >
-                Student-Led Startup
+                Web Experts
               </motion.span>
               
               <motion.h1 
@@ -82,7 +82,7 @@ const Home: React.FC = () => {
                 variants={textFadeVariants}
                 className="text-xl text-gray-400 mb-8 leading-relaxed max-w-2xl"
               >
-                From Idea to Online — We Build It. hifi_codeit is a team of passionate students helping small businesses and fellow students launch their digital dreams.
+                From Idea to Online — We Build It. hifi_codeit is a team of passionate web experts helping small businesses and growing brands launch their digital dreams.
               </motion.p>
               
               <motion.div 
@@ -114,10 +114,10 @@ const Home: React.FC = () => {
             <motion.div {...fadeInUp}>
               <h2 className="text-4xl md:text-5xl font-black mb-6">Fresh Eyes. <br />Modern Solutions.</h2>
               <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-                As a student team, we don't just follow trends—we build with the latest technologies like React, Tailwind, and modern design principles. We bring a high-energy approach to every project we touch.
+                We combine modern technology, creative thinking, and user-focused design to build impactful digital experiences. Every project is approached with innovation, precision, and a commitment to quality.
               </p>
               <Link to="/about" className="text-purple-400 font-bold flex items-center group">
-                Meet the Student Team <ArrowRight className="ml-2 group-hover:translate-x-2 transition-transform" size={20} />
+                Meet the Web Experts <ArrowRight className="ml-2 group-hover:translate-x-2 transition-transform" size={20} />
               </Link>
             </motion.div>
             <motion.div {...fadeInUp} transition={{ delay: 0.2 }} className="relative">
@@ -141,7 +141,7 @@ const Home: React.FC = () => {
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
           <motion.h2 {...fadeInUp} className="text-3xl md:text-5xl font-black mb-4">Our Expertise</motion.h2>
-          <motion.p {...fadeInUp} className="text-gray-400 text-lg">Professional quality with a student-friendly approach.</motion.p>
+          <motion.p {...fadeInUp} className="text-gray-400 text-lg">Professional quality delivered by experienced web experts.</motion.p>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -152,8 +152,8 @@ const Home: React.FC = () => {
               icon: <Code className="text-purple-500 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" size={32} />
             },
             {
-              title: "Student Projects",
-              desc: "Specialized software help for college projects. Mentorship and implementation.",
+              title: "Custom Web Apps",
+              desc: "Specialized full-stack development for businesses that need tailored digital solutions.",
               icon: <Users className="text-blue-500 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" size={32} />
             },
             {

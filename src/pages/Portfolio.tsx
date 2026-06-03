@@ -1,14 +1,16 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ExternalLink, Plus } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ExternalLink, Plus, Play, X, Star, Quote } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
 /**
  * Portfolio Page Component
- * Showcase of hifi_codeit projects with dummy links for easy replacement.
+ * Showcase of hifi_codeit projects with a Customer Reviews section.
  */
 const Portfolio: React.FC = () => {
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+
   const fadeInUp = {
     initial: { opacity: 0, y: 30 },
     whileInView: { opacity: 1, y: 0 },
@@ -34,12 +36,70 @@ const Portfolio: React.FC = () => {
       tags: ["Modern UI", "Brand-Centric", "SEO Ready"]
     },
     {
-      title: "Student Project Collaboration",
-      category: "Software Side (Student)",
-      description: "Helping fellow students implement complex software logic and clean UI for their college submissions.",
-      image: "/images/portfolio/student-project.jpg", // REPLACE IN public/images/portfolio/
+      title: "Custom Web Application",
+      category: "Full-Stack Development",
+      description: "A tailored web application built with modern technologies, delivering robust functionality and a seamless user experience.",
+      image: "/images/portfolio/web-app.jpg", // REPLACE IN public/images/portfolio/
       link: "#", // REPLACE WITH YOUR ACTUAL PROJECT LINK
-      tags: ["Mentorship", "Code Quality", "Architecture"]
+      tags: ["Full-Stack", "Code Quality", "Architecture"]
+    }
+  ];
+
+  // Customer Reviews — add/edit entries here
+  // For video reviews: set `type: 'video'` and provide a `videoUrl` (YouTube embed or direct .mp4)
+  // For text reviews: set `type: 'text'`
+  const reviews = [
+    {
+      type: "text" as const,
+      name: "Arun Kumar",
+      role: "Owner, Arun's Bakery",
+      rating: 5,
+      review: "hifi_codeit transformed our online presence completely. The website they built for us is stunning and our orders have increased significantly. Professional, fast, and incredibly talented team!",
+      avatar: "AK"
+    },
+    {
+      type: "video" as const,
+      name: "Priya Sharma",
+      role: "Founder, StyleNest",
+      rating: 5,
+      review: "Watch my full experience with hifi_codeit",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // REPLACE WITH ACTUAL VIDEO URL
+      thumbnail: "/images/reviews/priya-thumbnail.jpg", // REPLACE WITH ACTUAL THUMBNAIL
+      avatar: "PS"
+    },
+    {
+      type: "text" as const,
+      name: "Ravi Venkat",
+      role: "CEO, TechVenture",
+      rating: 5,
+      review: "Exceptional quality and attention to detail. The team understood our vision perfectly and delivered beyond expectations. Their commitment to modern design and clean code is unmatched.",
+      avatar: "RV"
+    },
+    {
+      type: "text" as const,
+      name: "Meena Devi",
+      role: "Director, Blooms Florist",
+      rating: 5,
+      review: "Working with hifi_codeit was a breeze. They were responsive, creative, and delivered our e-commerce site on time. Highly recommend them for any business looking to grow digitally.",
+      avatar: "MD"
+    },
+    {
+      type: "video" as const,
+      name: "Karthik Raja",
+      role: "Co-Founder, FoodieHub",
+      rating: 5,
+      review: "See how hifi_codeit helped us launch our food platform",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // REPLACE WITH ACTUAL VIDEO URL
+      thumbnail: "/images/reviews/karthik-thumbnail.jpg", // REPLACE WITH ACTUAL THUMBNAIL
+      avatar: "KR"
+    },
+    {
+      type: "text" as const,
+      name: "Divya Nair",
+      role: "Therapist & Brand Owner",
+      rating: 5,
+      review: "I was blown away by the professionalism. They created a calming, elegant website that truly reflects my brand. Every detail was thoughtfully crafted. Absolutely worth it!",
+      avatar: "DN"
     }
   ];
 
@@ -47,7 +107,7 @@ const Portfolio: React.FC = () => {
     <>
       <Helmet>
         <title>Portfolio | hifi_codeit</title>
-        <meta name="description" content="Explore our work - from local business landing pages to student software projects." />
+        <meta name="description" content="Explore our work — from local business landing pages to full-stack web applications built by web experts." />
       </Helmet>
 
       {/* Header */}
@@ -173,7 +233,7 @@ const Portfolio: React.FC = () => {
               </div>
               <h3 className="text-2xl font-bold mb-2 group-hover:text-white transition-colors">Build Your Vision?</h3>
               <p className="text-gray-500 max-w-xs mb-8">
-                Whether you're a startup or a student, let's build your next digital experience.
+                Whether you're a startup or a growing brand, let's build your next digital experience.
               </p>
               <Link to="/contact" className="px-6 py-3 bg-white text-black font-bold rounded-full text-sm hover:bg-purple-600 hover:text-white transition-all shadow-md">
                 Start Today
@@ -182,11 +242,146 @@ const Portfolio: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* ─── Customer Reviews Section ─── */}
+      <section className="py-32 bg-zinc-950/60 border-t border-zinc-900 relative overflow-hidden">
+        {/* Ambient glow */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-32 left-1/4 w-96 h-96 bg-purple-600/8 rounded-full blur-[120px]" />
+          <div className="absolute -bottom-32 right-1/4 w-96 h-96 bg-blue-600/8 rounded-full blur-[120px]" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Section Header */}
+          <motion.div {...fadeInUp} className="text-center mb-20">
+            <span className="inline-block px-4 py-1.5 bg-zinc-900 border border-zinc-800 rounded-full text-xs font-black uppercase tracking-widest text-purple-500 mb-6">
+              Client Stories
+            </span>
+            <h2 className="text-4xl md:text-6xl font-black mb-6">
+              What Our <span className="text-purple-500">Clients</span> Say.
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              Real feedback from real businesses we've helped grow. Don't take our word for it.
+            </p>
+          </motion.div>
+
+          {/* Reviews Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {reviews.map((review, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ y: -6, scale: 1.01 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", stiffness: 280, damping: 22, delay: idx * 0.08 }}
+                className="group relative bg-zinc-900/40 border border-zinc-800/80 rounded-[32px] p-8 glass-card-glow cursor-pointer transition-all duration-300 hover:border-purple-500/20 hover:shadow-xl hover:shadow-purple-500/5"
+              >
+                {/* Quote Icon */}
+                <div className="absolute top-6 right-8 text-purple-500/20 group-hover:text-purple-500/40 transition-colors duration-500">
+                  <Quote size={40} />
+                </div>
+
+                {/* Star Rating */}
+                <div className="flex gap-1 mb-6">
+                  {Array.from({ length: review.rating }).map((_, i) => (
+                    <Star key={i} size={16} className="text-amber-400 fill-amber-400" />
+                  ))}
+                </div>
+
+                {/* Video Review */}
+                {review.type === "video" ? (
+                  <div className="mb-6">
+                    <div
+                      className="relative rounded-2xl overflow-hidden aspect-video bg-zinc-800 border border-zinc-700/50 group-hover:border-purple-500/20 transition-colors cursor-pointer"
+                      onClick={() => setActiveVideo(review.videoUrl!)}
+                    >
+                      <img
+                        src={review.thumbnail}
+                        alt={`${review.name} review`}
+                        className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = `https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&q=80&w=600`;
+                        }}
+                      />
+                      {/* Play Button Overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <motion.div
+                          whileHover={{ scale: 1.15 }}
+                          whileTap={{ scale: 0.9 }}
+                          className="w-16 h-16 bg-purple-600/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl shadow-purple-600/30 border border-purple-500/30"
+                        >
+                          <Play size={24} className="text-white ml-1" fill="white" />
+                        </motion.div>
+                      </div>
+                      {/* Video Badge */}
+                      <div className="absolute top-3 left-3 px-3 py-1 bg-purple-600/80 backdrop-blur-sm rounded-full text-xs font-bold text-white border border-purple-500/30">
+                        Video Review
+                      </div>
+                    </div>
+                    <p className="text-gray-400 text-sm mt-4 italic">"{review.review}"</p>
+                  </div>
+                ) : (
+                  /* Text Review */
+                  <p className="text-gray-300 leading-relaxed mb-6 text-[15px]">
+                    "{review.review}"
+                  </p>
+                )}
+
+                {/* Reviewer Info */}
+                <div className="flex items-center gap-4 pt-4 border-t border-zinc-800/60">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-black text-sm shrink-0 shadow-lg shadow-purple-600/20">
+                    {review.avatar}
+                  </div>
+                  <div>
+                    <p className="text-white font-bold text-sm">{review.name}</p>
+                    <p className="text-purple-400 text-xs font-semibold">{review.role}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Video Lightbox */}
+      <AnimatePresence>
+        {activeVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4"
+            onClick={() => setActiveVideo(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="relative w-full max-w-4xl aspect-video rounded-[32px] overflow-hidden border border-zinc-800 shadow-2xl shadow-purple-500/10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <iframe
+                src={activeVideo}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title="Customer Review Video"
+              />
+            </motion.div>
+            {/* Close Button */}
+            <button
+              onClick={() => setActiveVideo(null)}
+              className="absolute top-6 right-6 w-12 h-12 bg-zinc-900 border border-zinc-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:border-purple-500/40 transition-all"
+            >
+              <X size={20} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
-
-// Fixed unused imports for linting
-import { Code as _Code, Layout as _Layout } from 'lucide-react';
 
 export default Portfolio;

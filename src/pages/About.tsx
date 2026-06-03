@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 
 /**
  * About Page Component
- * Tells the story of hifi_codeit and introduces the student startup team.
+ * Tells the story of hifi_codeit and introduces the web expert team.
  */
 const About: React.FC = () => {
   // Animation variants for sections
@@ -39,7 +39,7 @@ const About: React.FC = () => {
     <>
       <Helmet>
         <title>About Us | hifi_codeit</title>
-        <meta name="description" content="Meet the student-led team behind hifi_codeit - a dynamic startup building digital solutions." />
+        <meta name="description" content="Meet the expert team behind hifi_codeit - a dynamic startup building high-quality digital solutions." />
       </Helmet>
 
       {/* Hero / Header Section */}
@@ -73,7 +73,7 @@ const About: React.FC = () => {
           <motion.div {...fadeInUp} className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-black mb-4">Meet the Minds</h2>
             <p className="text-gray-400 max-w-2xl mx-auto italic text-lg">
-              "We're a team of students who decided to stop waiting for opportunities and start building them."
+              "We're a team of web experts who decided to stop waiting for opportunities and start building them."
             </p>
           </motion.div>
 
@@ -170,7 +170,7 @@ const About: React.FC = () => {
               </div>
               <div className="absolute -bottom-6 -left-6 bg-zinc-900 border border-zinc-800 p-8 rounded-3xl shadow-2xl max-w-[240px]">
                 <Heart className="text-red-500 mb-2" size={24} fill="currentColor" />
-                <p className="text-gray-400 text-sm font-bold uppercase tracking-wider">Built with passion by Students</p>
+                <p className="text-gray-400 text-sm font-bold uppercase tracking-wider">Built with passion by Web Experts</p>
               </div>
             </motion.div>
           </div>

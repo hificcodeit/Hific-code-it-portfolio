@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 
 /**
  * Services Page Component
- * Detailed list of what hifi_codeit offers, including Student Projects.
+ * Detailed list of what hifi_codeit offers, including Custom Software Projects.
  */
 const Services: React.FC = () => {
   const fadeInUp = {
@@ -23,8 +23,8 @@ const Services: React.FC = () => {
       features: ["Responsive Design", "React/Next.js", "Performance Optimization", "Custom Interactions"]
     },
     {
-      title: "Project for Students (Software)",
-      description: "Need help with your software projects? We offer specialized support for student projects, focusing on clean architecture, documentation, and implementation on the software side.",
+      title: "Custom Software Projects",
+      description: "Need a tailored software solution? We offer specialized development support, focusing on clean architecture, documentation, and end-to-end implementation.",
       icon: <Cpu className="text-blue-500" size={32} />,
       features: ["Code Mentorship", "UI/UX for Projects", "Full-Stack Development", "Documentation Support"]
     },
@@ -58,7 +58,7 @@ const Services: React.FC = () => {
     <>
       <Helmet>
         <title>Our Services | hifi_codeit</title>
-        <meta name="description" content="Explore digital services by hifi_codeit, including student software projects, web development, and branding." />
+        <meta name="description" content="Explore digital services by hifi_codeit, including custom software development, web design, and branding by web experts." />
       </Helmet>
 
       {/* Hero Section */}
@@ -92,7 +92,7 @@ const Services: React.FC = () => {
               }}
               className="text-xl text-gray-400"
             >
-              Tailored digital solutions designed to help your startup flourish and your student projects shine.
+              Tailored digital solutions designed to help your startup flourish and your vision shine.
             </motion.p>
           </motion.div>
         </div>
@@ -153,16 +153,16 @@ const Services: React.FC = () => {
           className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center bg-purple-600/10 border border-purple-500/20 rounded-[40px] py-16 relative overflow-hidden"
         >
           <div className="relative z-10">
-            <h2 className="text-3xl sm:text-4xl font-black mb-6">Special Support for Students</h2>
+            <h2 className="text-3xl sm:text-4xl font-black mb-6">Ready to Start Your Project?</h2>
             <p className="text-gray-400 mb-10 text-lg max-w-2xl mx-auto">
-              Are you a student working on a software project for college? We offer special discounts and mentorship to help you build something that gets you noticed.
+              Have a project in mind? Our web experts are ready to bring your vision to life with modern technology and precision craftsmanship.
             </p>
             <motion.div 
               whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(139, 92, 246, 0.4)" }}
               whileTap={{ scale: 0.95 }}
               className="inline-block px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-full transition-all cursor-pointer shadow-lg shadow-purple-600/20"
             >
-              Inquire About Student Projects
+              Inquire About Your Project
             </motion.div>
           </div>
           {/* Subtle glow backlights */}
