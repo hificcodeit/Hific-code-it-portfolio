@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Plus, Play, X, Star, Quote } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import kalaAgalyaImg from '../assets/First client.webp';
 
 /**
  * Portfolio Page Component
@@ -23,9 +24,10 @@ const Portfolio: React.FC = () => {
       title: "Kala Agalya Herbals",
       category: "E-Commerce & Brand Website",
       description: "A full-fledged e-commerce platform for a premium herbal hair oil brand — built with seamless shopping, brand storytelling, and a clean mobile-first design.",
-      image: "/images/portfolio/kala-agalya.jpg", // REPLACE IN public/images/portfolio/
+      image: kalaAgalyaImg,
       link: "https://www.kalaagalyaherbals.in/",
-      tags: ["E-Commerce", "React", "Mobile-First"]
+      tags: ["E-Commerce", "React", "Mobile-First"],
+      isLive: true
     },
     {
       title: "Local Business Landing Page",
@@ -164,7 +166,7 @@ const Portfolio: React.FC = () => {
                 key={idx}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -6 }}
+                whileHover={{ y: -8 }}
                 viewport={{ once: true }}
                 transition={{ 
                   type: "spring", 
@@ -175,11 +177,33 @@ const Portfolio: React.FC = () => {
                 className="group flex flex-col cursor-pointer"
               >
                 {/* Project Image Container */}
-                <div className="relative overflow-hidden rounded-[40px] aspect-[16/10] bg-zinc-900 border border-zinc-800/80 transition-all duration-500 group-hover:border-purple-500/20 group-hover:shadow-xl group-hover:shadow-purple-500/5">
+                <div className={`relative overflow-hidden rounded-[40px] aspect-[16/10] bg-zinc-900 border transition-all duration-500 ${
+                  (project as any).isLive
+                    ? 'border-amber-500/40 shadow-xl shadow-amber-500/10 group-hover:border-amber-400/70 group-hover:shadow-2xl group-hover:shadow-amber-500/20'
+                    : 'border-zinc-800/80 group-hover:border-purple-500/20 group-hover:shadow-xl group-hover:shadow-purple-500/5'
+                }`}>
+
+                  {/* LIVE CLIENT Badge */}
+                  {(project as any).isLive && (
+                    <div className="absolute top-4 left-4 z-30 flex items-center gap-2 px-3 py-1.5 bg-black/70 backdrop-blur-md border border-amber-500/40 rounded-full shadow-lg">
+                      <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shadow-sm shadow-amber-400" />
+                      <span className="text-[10px] font-black uppercase tracking-widest text-amber-400">Live Client</span>
+                    </div>
+                  )}
+
+                  {/* Gold shimmer overlay for live card */}
+                  {(project as any).isLive && (
+                    <div className="absolute inset-0 z-10 bg-gradient-to-tr from-amber-600/5 via-transparent to-yellow-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                  )}
+
                   <img 
                     src={project.image} 
                     alt={project.title}
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 opacity-60 group-hover:opacity-100"
+                    className={`w-full h-full object-cover object-top transition-all duration-700 group-hover:scale-105 ${
+                      (project as any).isLive
+                        ? 'opacity-90 group-hover:opacity-100'
+                        : 'grayscale group-hover:grayscale-0 opacity-60 group-hover:opacity-100'
+                    }`}
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = `https://images.unsplash.com/photo-${idx === 0 ? '1460925895917-afdab827c52f' : '1486312338219-ce68d2c6f44d'}?auto=format&fit=crop&q=80&w=1200`;
                     }}
@@ -194,7 +218,9 @@ const Portfolio: React.FC = () => {
                     <motion.div 
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
-                      className="p-4 bg-white rounded-full text-black transform scale-0 group-hover:scale-100 transition-transform duration-300 shadow-xl"
+                      className={`p-4 rounded-full text-black transform scale-0 group-hover:scale-100 transition-transform duration-300 shadow-xl ${
+                        (project as any).isLive ? 'bg-amber-400' : 'bg-white'
+                      }`}
                     >
                       <ExternalLink size={24} />
                     </motion.div>
@@ -205,12 +231,18 @@ const Portfolio: React.FC = () => {
                 <div className="mt-8">
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.tags.map((tag, tIdx) => (
-                      <span key={tIdx} className="text-[10px] font-black uppercase tracking-widest text-purple-500 border border-purple-500/30 px-3 py-1 rounded-full bg-purple-500/5 transition-all group-hover:border-purple-500/50">
+                      <span key={tIdx} className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full transition-all ${
+                        (project as any).isLive
+                          ? 'text-amber-400 border border-amber-500/30 bg-amber-500/5 group-hover:border-amber-400/60'
+                          : 'text-purple-500 border border-purple-500/30 bg-purple-500/5 group-hover:border-purple-500/50'
+                      }`}>
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <h3 className="text-3xl font-bold mb-3 group-hover:text-purple-400 transition-colors">{project.title}</h3>
+                  <h3 className={`text-3xl font-bold mb-3 transition-colors ${
+                    (project as any).isLive ? 'group-hover:text-amber-400' : 'group-hover:text-purple-400'
+                  }`}>{project.title}</h3>
                   <p className="text-gray-400 leading-relaxed mb-6">
                     {project.description}
                   </p>
