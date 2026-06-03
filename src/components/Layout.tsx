@@ -100,6 +100,35 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
 
       <Footer />
+
+      {/* ─── WhatsApp Floating Button ─── */}
+      <motion.a
+        href="https://wa.me/919095614966"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat with us on WhatsApp"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 260, damping: 20, delay: 1.2 }}
+        whileHover={{ scale: 1.12, y: -4 }}
+        whileTap={{ scale: 0.92 }}
+        className="fixed bottom-6 right-6 z-[200] group"
+      >
+        {/* Pulse ring */}
+        <span className="absolute inset-0 rounded-full bg-green-400/40 animate-ping" />
+        {/* Button */}
+        <div className="relative w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-2xl shadow-green-500/40 border border-green-400/30 transition-shadow duration-300 group-hover:shadow-green-500/60">
+          {/* WhatsApp SVG Icon */}
+          <svg viewBox="0 0 32 32" className="w-7 h-7 fill-white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16.004 2.667C8.641 2.667 2.667 8.641 2.667 16c0 2.365.641 4.672 1.859 6.683L2.667 29.333l6.816-1.789A13.28 13.28 0 0 0 16.004 29.333C23.365 29.333 29.333 23.36 29.333 16c0-7.36-5.968-13.333-13.329-13.333zm0 24.267a11.001 11.001 0 0 1-5.617-1.541l-.403-.24-4.043 1.061 1.08-3.937-.265-.412A10.978 10.978 0 0 1 5.04 16c0-6.052 4.92-10.973 10.964-10.973 6.045 0 10.965 4.921 10.965 10.973 0 6.053-4.92 10.974-10.965 10.974zm6.015-8.22c-.328-.164-1.945-.96-2.247-1.069-.3-.111-.52-.164-.737.164-.22.328-.848 1.069-1.04 1.291-.191.219-.383.246-.711.082-.328-.164-1.385-.511-2.638-1.627-.975-.869-1.633-1.943-1.824-2.271-.191-.328-.02-.505.144-.668.148-.148.328-.383.492-.575.164-.191.219-.328.328-.547.109-.219.055-.41-.027-.575-.082-.164-.737-1.777-1.01-2.435-.265-.637-.537-.55-.737-.56-.191-.009-.41-.011-.629-.011-.219 0-.575.082-.875.41-.3.328-1.147 1.12-1.147 2.732 0 1.613 1.174 3.172 1.338 3.39.164.22 2.309 3.527 5.598 4.945.782.337 1.394.539 1.87.69.786.249 1.503.214 2.069.13.631-.094 1.945-.795 2.22-1.563.274-.767.274-1.426.191-1.563-.082-.137-.3-.219-.629-.383z" />
+          </svg>
+        </div>
+        {/* Tooltip */}
+        <div className="absolute right-16 top-1/2 -translate-y-1/2 bg-zinc-900 border border-zinc-800 text-white text-xs font-bold px-3 py-2 rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0 pointer-events-none shadow-xl">
+          Chat on WhatsApp
+          <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-b-4 border-l-6 border-transparent border-l-zinc-800" />
+        </div>
+      </motion.a>
     </div>
   );
 };
