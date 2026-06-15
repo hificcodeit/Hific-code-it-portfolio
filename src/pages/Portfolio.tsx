@@ -36,7 +36,7 @@ const Portfolio: React.FC = () => {
       image: "https://images.unsplash.com/photo-1608734265656-f035d3e7bcbf?auto=format&fit=crop&q=80&w=1200",
       link: "https://agazh-avaiyam.vercel.app/",
       tags: ["React", "Tamil Cultural", "SEO Optimised"],
-      isDemo: true
+      isLive: true
     },
     {
       title: "Eternal Moments Studio",
@@ -54,6 +54,15 @@ const Portfolio: React.FC = () => {
       image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=1200",
       link: "https://store-protfolio.netlify.app/",
       tags: ["E-Commerce", "React", "Full-Stack"],
+      isDemo: true
+    },
+    {
+      title: "Iron Pulse Gym",
+      category: "Fitness Center Landing Page",
+      description: "A high-energy, modern landing page for a premier fitness center in Ambattur. Features bold typography, dynamic call-to-actions, training plans, and a high-converting free trial registration flow.",
+      image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=1200",
+      link: "https://gym-protfolio.netlify.app/",
+      tags: ["React", "Fitness UI", "Lead Generation"],
       isDemo: true
     }
   ];
