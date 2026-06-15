@@ -30,28 +30,31 @@ const Portfolio: React.FC = () => {
       isLive: true
     },
     {
-      title: "Local Business Landing Page",
-      category: "Web Development (Demo)",
-      description: "A conversion-focused landing page for small local businesses. Designed for speed and lead generation.",
-      image: "/images/portfolio/landing-demo.jpg", // REPLACE IN public/images/portfolio/
-      link: "https://your-demo-link-here.com", // REPLACE WITH YOUR ACTUAL PROJECT LINK
-      tags: ["React", "Tailwind", "Responsive"]
+      title: "Agazh Avaiyam",
+      category: "Cultural & Archaeological NGO Website",
+      description: "A bilingual (Tamil & English) digital platform for a premier archaeological excellence centre in Tamil Nadu. Built with SEO-first architecture, hero LCP optimisation, and an immersive design that makes archaeology engaging and accessible to all audiences.",
+      image: "https://images.unsplash.com/photo-1608734265656-f035d3e7bcbf?auto=format&fit=crop&q=80&w=1200",
+      link: "https://agazh-avaiyam.vercel.app/",
+      tags: ["React", "Tamil Cultural", "SEO Optimised"],
+      isDemo: true
     },
     {
-      title: "Sample Business Website",
-      category: "Full Business Site (Demo)",
-      description: "A multi-page corporate site with service listings, blog, and brand-aligned aesthetics.",
-      image: "/images/portfolio/business-demo.jpg", // REPLACE IN public/images/portfolio/
-      link: "https://your-business-demo-link.com", // REPLACE WITH YOUR ACTUAL PROJECT LINK
-      tags: ["Modern UI", "Brand-Centric", "SEO Ready"]
+      title: "Eternal Moments Studio",
+      category: "Luxury Wedding Photography Portfolio",
+      description: "A high-end wedding photography & planning portfolio website with cinematic aesthetics. Features rich Playfair Display typography, curated gallery layouts, and a seamless booking-inquiry experience designed to convert high-value clients.",
+      image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1200",
+      link: "https://wedding-protfolio.netlify.app/",
+      tags: ["Wedding", "Luxury UI", "Portfolio"],
+      isDemo: true
     },
     {
-      title: "Custom Web Application",
-      category: "Full-Stack Development",
-      description: "A tailored web application built with modern technologies, delivering robust functionality and a seamless user experience.",
-      image: "/images/portfolio/web-app.jpg", // REPLACE IN public/images/portfolio/
-      link: "#", // REPLACE WITH YOUR ACTUAL PROJECT LINK
-      tags: ["Full-Stack", "Code Quality", "Architecture"]
+      title: "Arena Web Dev — Store",
+      category: "E-Commerce Demo Application",
+      description: "A full-featured e-commerce store demo showcasing product listings, cart functionality, and a polished checkout flow. Demonstrates scalable React architecture with modern UI patterns built for real-world retail businesses.",
+      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=1200",
+      link: "https://store-protfolio.netlify.app/",
+      tags: ["E-Commerce", "React", "Full-Stack"],
+      isDemo: true
     }
   ];
 
@@ -180,7 +183,9 @@ const Portfolio: React.FC = () => {
                 <div className={`relative overflow-hidden rounded-[40px] aspect-[16/10] bg-zinc-900 border transition-all duration-500 ${
                   (project as any).isLive
                     ? 'border-amber-500/40 shadow-xl shadow-amber-500/10 group-hover:border-amber-400/70 group-hover:shadow-2xl group-hover:shadow-amber-500/20'
-                    : 'border-zinc-800/80 group-hover:border-purple-500/20 group-hover:shadow-xl group-hover:shadow-purple-500/5'
+                    : (project as any).isDemo
+                      ? 'border-purple-500/40 shadow-xl shadow-purple-500/10 group-hover:border-purple-400/70 group-hover:shadow-2xl group-hover:shadow-purple-500/20'
+                      : 'border-zinc-800/80 group-hover:border-purple-500/20 group-hover:shadow-xl group-hover:shadow-purple-500/5'
                 }`}>
 
                   {/* LIVE CLIENT Badge */}
@@ -191,16 +196,29 @@ const Portfolio: React.FC = () => {
                     </div>
                   )}
 
+                  {/* DEMO PROJECT Badge */}
+                  {(project as any).isDemo && (
+                    <div className="absolute top-4 left-4 z-30 flex items-center gap-2 px-3 py-1.5 bg-black/70 backdrop-blur-md border border-purple-500/40 rounded-full shadow-lg">
+                      <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse shadow-sm shadow-purple-400" />
+                      <span className="text-[10px] font-black uppercase tracking-widest text-purple-400">Demo Project</span>
+                    </div>
+                  )}
+
                   {/* Gold shimmer overlay for live card */}
                   {(project as any).isLive && (
                     <div className="absolute inset-0 z-10 bg-gradient-to-tr from-amber-600/5 via-transparent to-yellow-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                  )}
+
+                  {/* Purple shimmer overlay for demo card */}
+                  {(project as any).isDemo && (
+                    <div className="absolute inset-0 z-10 bg-gradient-to-tr from-purple-600/5 via-transparent to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                   )}
 
                   <img 
                     src={project.image} 
                     alt={project.title}
                     className={`w-full h-full object-cover object-top transition-all duration-700 group-hover:scale-105 ${
-                      (project as any).isLive
+                      (project as any).isLive || (project as any).isDemo
                         ? 'opacity-90 group-hover:opacity-100'
                         : 'grayscale group-hover:grayscale-0 opacity-60 group-hover:opacity-100'
                     }`}
@@ -219,7 +237,7 @@ const Portfolio: React.FC = () => {
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       className={`p-4 rounded-full text-black transform scale-0 group-hover:scale-100 transition-transform duration-300 shadow-xl ${
-                        (project as any).isLive ? 'bg-amber-400' : 'bg-white'
+                        (project as any).isLive ? 'bg-amber-400' : (project as any).isDemo ? 'bg-purple-500 text-white' : 'bg-white'
                       }`}
                     >
                       <ExternalLink size={24} />
@@ -250,7 +268,9 @@ const Portfolio: React.FC = () => {
                     href={project.link}
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex items-center text-sm font-bold text-white group-hover:text-purple-400 transition-colors"
+                    className={`flex items-center text-sm font-bold text-white transition-colors ${
+                      (project as any).isLive ? 'group-hover:text-amber-400' : 'group-hover:text-purple-400'
+                    }`}
                   >
                     Live Preview <ExternalLink className="ml-2 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" size={14} />
                   </a>
