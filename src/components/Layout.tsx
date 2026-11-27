@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import ImageSequenceBackground from './ImageSequenceBackground';
+import ScrollTextEffects from './ScrollTextEffects';
 
 /**
  * Layout Component
@@ -34,6 +35,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
           >
+            <ScrollTextEffects />
             {children}
           </motion.div>
         </AnimatePresence>

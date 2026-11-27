@@ -12,13 +12,6 @@ import kalaAgalyaImg from '../assets/First client.webp';
 const Portfolio: React.FC = () => {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
-  const fadeInUp = {
-    initial: { opacity: 0, y: 30 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.8 }
-  };
-
   const projects = [
     {
       title: "Kala Agalya Herbals",
@@ -154,6 +147,7 @@ const Portfolio: React.FC = () => {
                 transition: { staggerChildren: 0.15 }
               }
             }}
+            data-scroll-text="hero-parallax"
             className="max-w-3xl"
           >
             <motion.h1 
@@ -331,17 +325,17 @@ const Portfolio: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Section Header */}
-          <motion.div {...fadeInUp} className="text-center mb-20">
+          <div className="text-center mb-20">
             <span className="inline-block px-4 py-1.5 bg-zinc-900 border border-zinc-800 rounded-full text-xs font-black uppercase tracking-widest text-purple-500 mb-6">
               Client Stories
             </span>
-            <h2 className="text-4xl md:text-6xl font-black mb-6">
+            <h2 data-scroll-text="split-words" className="text-4xl md:text-6xl font-black mb-6">
               What Our <span className="text-purple-500">Clients</span> Say.
             </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            <p data-scroll-text="reveal" className="text-gray-400 text-lg max-w-2xl mx-auto">
               Real feedback from real businesses we've helped grow. Don't take our word for it.
             </p>
-          </motion.div>
+          </div>
 
           {/* Reviews Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

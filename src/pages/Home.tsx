@@ -9,14 +9,6 @@ import { Helmet } from 'react-helmet-async';
  * Main landing page for hifi_codeit — a team of web experts.
  */
 const Home: React.FC = () => {
-  // Animation for sections
-  const fadeInUp = {
-    initial: { opacity: 0, y: 30 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.8, ease: "easeOut" }
-  };
-
   // Staggered Container for Fade-In Text
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -55,7 +47,7 @@ const Home: React.FC = () => {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20">
-          <div className="max-w-3xl">
+          <div data-scroll-text="hero-parallax" className="max-w-3xl">
             <motion.div
               variants={containerVariants}
               initial="hidden"
@@ -111,16 +103,22 @@ const Home: React.FC = () => {
       <section className="py-24 bg-zinc-950/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-            <motion.div {...fadeInUp}>
-              <h2 className="text-4xl md:text-5xl font-black mb-6">Fresh Eyes. <br />Modern Solutions.</h2>
-              <p className="text-gray-400 text-lg mb-8 leading-relaxed">
+            <div>
+              <h2 data-scroll-text="split-words" className="text-4xl md:text-5xl font-black mb-6">Fresh Eyes. <br />Modern Solutions.</h2>
+              <p data-scroll-text="reveal" className="text-gray-400 text-lg mb-8 leading-relaxed">
                 We combine modern technology, creative thinking, and user-focused design to build impactful digital experiences. Every project is approached with innovation, precision, and a commitment to quality.
               </p>
               <Link to="/about" className="text-purple-400 font-bold flex items-center group">
                 Meet the Web Experts <ArrowRight className="ml-2 group-hover:translate-x-2 transition-transform" size={20} />
               </Link>
-            </motion.div>
-            <motion.div {...fadeInUp} transition={{ delay: 0.2 }} className="relative">
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              className="relative"
+            >
               <div className="aspect-video bg-zinc-900 rounded-[40px] border border-zinc-800 overflow-hidden">
                 {/* PLACEHOLDER FOR TEAM PHOTO: Replace /images/home-team.jpg later */}
                 <img 
@@ -140,8 +138,8 @@ const Home: React.FC = () => {
       {/* Expertise Section */}
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
-          <motion.h2 {...fadeInUp} className="text-3xl md:text-5xl font-black mb-4">Our Expertise</motion.h2>
-          <motion.p {...fadeInUp} className="text-gray-400 text-lg">Professional quality delivered by experienced web experts.</motion.p>
+          <h2 data-scroll-text="split-words" className="text-3xl md:text-5xl font-black mb-4">Our Expertise</h2>
+          <p data-scroll-text="reveal" className="text-gray-400 text-lg">Professional quality delivered by experienced web experts.</p>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -202,10 +200,10 @@ const Home: React.FC = () => {
             </div>
 
             <div className="relative z-10 max-w-3xl mx-auto">
-              <h2 className="text-4xl md:text-7xl font-black mb-8 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-300% animate-gradient-text-flow">
+              <h2 data-scroll-text="reveal" className="text-4xl md:text-7xl font-black mb-8 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-300% animate-gradient-text-flow">
                 Ready to grow your vision?
               </h2>
-              <p className="text-gray-400 text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
+              <p data-scroll-text="reveal" className="text-gray-400 text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
                 Partner with us to create digital experiences that set your brand apart. Let's make it happen together.
               </p>
               <motion.div

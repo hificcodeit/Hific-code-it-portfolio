@@ -8,13 +8,6 @@ import { Helmet } from 'react-helmet-async';
  * Detailed list of what hifi_codeit offers, including Custom Software Projects.
  */
 const Services: React.FC = () => {
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.6 }
-  };
-
   const servicesList = [
     {
       title: "Web Design & Development",
@@ -74,6 +67,7 @@ const Services: React.FC = () => {
                 transition: { staggerChildren: 0.15 }
               }
             }}
+            data-scroll-text="hero-parallax"
             className="text-center max-w-3xl mx-auto"
           >
             <motion.h1 
@@ -124,8 +118,8 @@ const Services: React.FC = () => {
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold mb-4 group-hover:text-purple-400 transition-colors">{service.title}</h3>
-                    <p className="text-gray-400 mb-8 leading-relaxed">
+                    <h3 data-scroll-text="reveal" className="text-2xl font-bold mb-4 group-hover:text-purple-400 transition-colors">{service.title}</h3>
+                    <p data-scroll-text="reveal" className="text-gray-400 mb-8 leading-relaxed">
                       {service.description}
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -153,8 +147,8 @@ const Services: React.FC = () => {
           className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center bg-purple-600/10 border border-purple-500/20 rounded-[40px] py-16 relative overflow-hidden"
         >
           <div className="relative z-10">
-            <h2 className="text-3xl sm:text-4xl font-black mb-6">Ready to Start Your Project?</h2>
-            <p className="text-gray-400 mb-10 text-lg max-w-2xl mx-auto">
+            <h2 data-scroll-text="split-words" className="text-3xl sm:text-4xl font-black mb-6">Ready to Start Your Project?</h2>
+            <p data-scroll-text="reveal" className="text-gray-400 mb-10 text-lg max-w-2xl mx-auto">
               Have a project in mind? Our web experts are ready to bring your vision to life with modern technology and precision craftsmanship.
             </p>
             <motion.div 

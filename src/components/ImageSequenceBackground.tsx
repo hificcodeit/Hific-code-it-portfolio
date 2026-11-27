@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Film, Play, Pause, RotateCcw, ArrowDownUp, X } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -110,20 +111,18 @@ function renderSequenceFrame(
 
   for (let r = 0; r < rows; r++) {
     const rowArr: Array<{ x: number; y: number; depth: number }> = [];
-    const vNorm = r / (rows - 1) - 0.5; // -0.5 .. 0.5
+    const vNorm = r / (rows - 1) - 0.5;
 
     for (let c = 0; c < cols; c++) {
-      const uNorm = c / (cols - 1) - 0.5; // -0.5 .. 0.5
+      const uNorm = c / (cols - 1) - 0.5;
 
       const wx = uNorm * 2.2;
       const wz = vNorm * 1.8;
-      // Multi-harmonic 3D wave surface morphing smoothly across sequence frames
       const wave1 = Math.sin(wx * 3.1 + t) * 0.16;
       const wave2 = Math.cos(wz * 3.6 - t * 1.0) * 0.14;
       const wave3 = Math.sin((wx + wz) * 2.4 + t * 2.0) * 0.07;
       const wy = wave1 + wave2 + wave3 + 0.18;
 
-      // Rotate around Y (yaw) then X (pitch)
       const rx = wx * cosY - wz * sinY;
       const rz1 = wx * sinY + wz * cosY;
       const ry = wy * cosP - rz1 * sinP;
@@ -138,7 +137,6 @@ function renderSequenceFrame(
     projected.push(rowArr);
   }
 
-  // Draw latitude ribbon curves
   ctx.lineCap = 'round';
   for (let r = 0; r < rows; r++) {
     const rowRatio = r / (rows - 1);
@@ -167,7 +165,6 @@ function renderSequenceFrame(
     ctx.stroke();
   }
 
-  // Subtle cross-meridian links & glowing crest nodes
   for (let c = 0; c < cols; c += 2) {
     ctx.strokeStyle = 'rgba(139, 92, 246, 0.075)';
     ctx.lineWidth = 0.8;
@@ -216,11 +213,30 @@ function renderSequenceFrame(
 /**
  * ImageSequenceBackground Component
  * Uses GSAP + ScrollTrigger + HTML5 Canvas to scrub through a pre-rendered
- * 3D cosmic purple/pink/blue frame sequence across all pages of the site.
+ * 3D cosmic purple/pink/blue frame sequence across all pages, plus a toggleable Tester HUD.
  */
 const ImageSequenceBackground: React.FC<ImageSequenceBackgroundProps> = ({ frameUrls }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const { pathname } = useLocation();
+
+  const frameCount = frameUrls?.length ?? DEFAULT_FRAME_COUNT;
+  const [hudOpen, setHudOpen] = useState(false);
+  const [currentFrame, setCurrentFrame] = useState(0);
+  const [scrollPercent, setScrollPercent] = useState(0);
+  const [isLooping, setIsLooping] = useState(false);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(false);
+
+  // Refs shared with the tester HUD controls
+  const drawRef = useRef<(() => void) | null>(null);
+  const stateRef = useRef({
+    scrollFrame: 0,
+    ambientOffset: 0,
+    manualFrame: null as number | null,
+    mouseX: 0,
+    mouseY: 0,
+  });
+  const loopTweenRef = useRef<gsap.core.Tween | null>(null);
+  const autoScrollTweenRef = useRef<gsap.core.Tween | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -231,16 +247,9 @@ const ImageSequenceBackground: React.FC<ImageSequenceBackgroundProps> = ({ frame
     let cancelled = false;
     let idleHandle: number | null = null;
     let resizeTimer: number | null = null;
-    const frameCount = frameUrls?.length ?? DEFAULT_FRAME_COUNT;
     const frames: Array<HTMLCanvasElement | HTMLImageElement | null> = new Array(frameCount).fill(null);
 
-    const state = {
-      scrollFrame: 0,
-      ambientOffset: 0,
-      mouseX: 0,
-      mouseY: 0,
-    };
-
+    const state = stateRef.current;
     const prefersReducedMotion =
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -251,7 +260,7 @@ const ImageSequenceBackground: React.FC<ImageSequenceBackgroundProps> = ({ frame
       const ratio = vw / vh;
       const bufW = Math.min(vw, MAX_BUFFER_WIDTH);
       const bufH = Math.min(Math.round(bufW / ratio), MAX_BUFFER_HEIGHT);
-      return { vw, vh, bufW: Math.max(bufW, 320), bufH: Math.max(bufH, 240) };
+      return { bufW: Math.max(bufW, 320), bufH: Math.max(bufH, 240) };
     };
 
     const drawCurrentFrame = () => {
@@ -264,15 +273,19 @@ const ImageSequenceBackground: React.FC<ImageSequenceBackgroundProps> = ({ frame
         canvas.height = targetH;
       }
 
-      const rawIndex = state.scrollFrame + state.ambientOffset;
-      const wrapped = ((Math.round(rawIndex) % frameCount) + frameCount) % frameCount;
+      const activeRaw =
+        state.manualFrame !== null
+          ? state.manualFrame
+          : state.scrollFrame + state.ambientOffset;
+      const wrapped = ((Math.round(activeRaw) % frameCount) + frameCount) % frameCount;
       const frame = frames[wrapped] ?? frames[0];
+
+      setCurrentFrame(wrapped);
 
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
 
       if (frame) {
-        // Slight overscan (1.03x) allows smooth cursor parallax without edge clipping
         const overscan = 1.03;
         const drawW = canvas.width * overscan;
         const drawH = canvas.height * overscan;
@@ -284,6 +297,8 @@ const ImageSequenceBackground: React.FC<ImageSequenceBackgroundProps> = ({ frame
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
     };
+
+    drawRef.current = drawCurrentFrame;
 
     const buildFrames = () => {
       if (frameUrls && frameUrls.length > 0) {
@@ -312,13 +327,11 @@ const ImageSequenceBackground: React.FC<ImageSequenceBackgroundProps> = ({ frame
         frames[index] = offscreen;
       };
 
-      // Render frame 0 immediately for instant first paint
       createFrameAt(0);
       drawCurrentFrame();
 
       if (prefersReducedMotion) return;
 
-      // Progressively populate remaining sequence frames without blocking main thread
       let cursor = 1;
       const populateBatch = () => {
         if (cancelled) return;
@@ -336,7 +349,6 @@ const ImageSequenceBackground: React.FC<ImageSequenceBackgroundProps> = ({ frame
 
     buildFrames();
 
-    // GSAP ScrollTrigger scrubs the image sequence across the full page scroll
     let gsapCtx: gsap.Context | null = null;
     if (!prefersReducedMotion) {
       gsapCtx = gsap.context(() => {
@@ -349,11 +361,13 @@ const ImageSequenceBackground: React.FC<ImageSequenceBackgroundProps> = ({ frame
             end: 'bottom bottom',
             scrub: 0.75,
             invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              setScrollPercent(Math.round(self.progress * 100));
+            },
           },
           onUpdate: drawCurrentFrame,
         });
 
-        // Subtle continuous ambient motion so short pages (e.g. Contact) remain alive
         gsap.to(state, {
           ambientOffset: 6,
           duration: 14,
@@ -395,28 +409,221 @@ const ImageSequenceBackground: React.FC<ImageSequenceBackgroundProps> = ({ frame
 
     return () => {
       cancelled = true;
+      drawRef.current = null;
       if (idleHandle !== null) window.cancelAnimationFrame(idleHandle);
       if (resizeTimer !== null) window.clearTimeout(resizeTimer);
+      loopTweenRef.current?.kill();
+      autoScrollTweenRef.current?.kill();
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
       if (gsapCtx) gsapCtx.revert();
     };
-  }, [frameUrls]);
+  }, [frameUrls, frameCount]);
 
   // Recalculate ScrollTrigger scroll distance whenever the route changes
   useEffect(() => {
+    stateRef.current.manualFrame = null;
+    loopTweenRef.current?.kill();
+    autoScrollTweenRef.current?.kill();
+    setIsLooping(false);
+    setIsAutoScrolling(false);
+    setScrollPercent(0);
+
     const timer = window.setTimeout(() => {
       ScrollTrigger.refresh();
     }, 420);
     return () => window.clearTimeout(timer);
   }, [pathname]);
 
+  const handleScrubSlider = (value: number) => {
+    loopTweenRef.current?.kill();
+    setIsLooping(false);
+    stateRef.current.manualFrame = value;
+    drawRef.current?.();
+  };
+
+  const handleToggleLoop = () => {
+    if (isLooping) {
+      loopTweenRef.current?.kill();
+      stateRef.current.manualFrame = null;
+      setIsLooping(false);
+      drawRef.current?.();
+      return;
+    }
+
+    autoScrollTweenRef.current?.kill();
+    setIsAutoScrolling(false);
+
+    const startVal = stateRef.current.manualFrame ?? currentFrame;
+    stateRef.current.manualFrame = startVal;
+    setIsLooping(true);
+
+    loopTweenRef.current = gsap.to(stateRef.current, {
+      manualFrame: startVal + frameCount,
+      duration: 3.6,
+      repeat: -1,
+      ease: 'none',
+      onUpdate: () => drawRef.current?.(),
+    });
+  };
+
+  const handleAutoScrollTest = () => {
+    if (isAutoScrolling) {
+      autoScrollTweenRef.current?.kill();
+      setIsAutoScrolling(false);
+      return;
+    }
+
+    loopTweenRef.current?.kill();
+    setIsLooping(false);
+    stateRef.current.manualFrame = null;
+
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    if (maxScroll <= 10) {
+      // Short pages without vertical scroll fall back to playing the sequence loop
+      handleToggleLoop();
+      return;
+    }
+
+    setIsAutoScrolling(true);
+    const scrollObj = { y: window.scrollY };
+    const targetY = window.scrollY > maxScroll * 0.5 ? 0 : maxScroll;
+
+    autoScrollTweenRef.current = gsap.to(scrollObj, {
+      y: targetY,
+      duration: 4.5,
+      ease: 'power1.inOut',
+      onUpdate: () => {
+        window.scrollTo(0, scrollObj.y);
+      },
+      onComplete: () => {
+        setIsAutoScrolling(false);
+      },
+    });
+  };
+
+  const handleReset = () => {
+    loopTweenRef.current?.kill();
+    autoScrollTweenRef.current?.kill();
+    setIsLooping(false);
+    setIsAutoScrolling(false);
+    stateRef.current.manualFrame = null;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    drawRef.current?.();
+  };
+
   return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden="true"
-      className="fixed inset-0 z-0 w-full h-full pointer-events-none bg-[#05020d]"
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        className="fixed inset-0 z-0 w-full h-full pointer-events-none bg-[#05020d]"
+      />
+
+      {/* Toggleable Scroll-Sequence Tester HUD */}
+      <div className="fixed bottom-6 left-6 z-[200]">
+        {!hudOpen ? (
+          <button
+            type="button"
+            onClick={() => setHudOpen(true)}
+            aria-label="Open Scroll Animation Tester"
+            className="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-zinc-950/85 hover:bg-zinc-900/95 backdrop-blur-xl border border-purple-500/35 hover:border-purple-400/60 text-xs font-bold text-white shadow-xl shadow-purple-950/30 transition-all cursor-pointer"
+          >
+            <Film size={14} className="text-purple-400" />
+            <span>Scroll FX</span>
+            <span className="px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-300 font-mono text-[11px]">
+              {String(currentFrame + 1).padStart(2, '0')}/{frameCount}
+            </span>
+          </button>
+        ) : (
+          <div className="w-72 rounded-2xl bg-zinc-950/90 backdrop-blur-xl border border-purple-500/35 p-4 shadow-2xl shadow-purple-950/40 text-xs">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2 font-bold text-white">
+                <Film size={14} className="text-purple-400" />
+                <span>Sequence Tester</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setHudOpen(false)}
+                aria-label="Close Scroll Animation Tester"
+                className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/80 transition-colors cursor-pointer"
+              >
+                <X size={14} />
+              </button>
+            </div>
+
+            {/* Frame & Scroll Readout */}
+            <div className="flex items-center justify-between text-[11px] text-zinc-400 mb-1.5 font-mono">
+              <span>
+                Frame <strong className="text-purple-300">{String(currentFrame + 1).padStart(2, '0')}</strong> / {frameCount}
+              </span>
+              <span>
+                Scroll <strong className="text-blue-300">{scrollPercent}%</strong>
+              </span>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="w-full h-1.5 rounded-full bg-zinc-800 overflow-hidden mb-3">
+              <div
+                className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 transition-all duration-75"
+                style={{ width: `${Math.round(((currentFrame + 1) / frameCount) * 100)}%` }}
+              />
+            </div>
+
+            {/* Manual Frame Scrubber */}
+            <label className="block text-[10px] uppercase tracking-wider text-zinc-500 font-bold mb-1">
+              Scrub Frame
+            </label>
+            <input
+              type="range"
+              min={0}
+              max={frameCount - 1}
+              value={currentFrame}
+              onChange={(e) => handleScrubSlider(Number(e.target.value))}
+              className="w-full accent-purple-500 cursor-pointer mb-3"
+            />
+
+            {/* Controls */}
+            <div className="grid grid-cols-3 gap-2">
+              <button
+                type="button"
+                onClick={handleAutoScrollTest}
+                className={`flex items-center justify-center gap-1 px-2 py-2 rounded-xl font-semibold border transition-all cursor-pointer ${
+                  isAutoScrolling
+                    ? 'bg-purple-600 text-white border-purple-400'
+                    : 'bg-zinc-900/80 text-zinc-200 border-zinc-800 hover:border-purple-500/40'
+                }`}
+              >
+                <ArrowDownUp size={12} />
+                <span>{isAutoScrolling ? 'Stop' : 'Scroll'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleToggleLoop}
+                className={`flex items-center justify-center gap-1 px-2 py-2 rounded-xl font-semibold border transition-all cursor-pointer ${
+                  isLooping
+                    ? 'bg-pink-600 text-white border-pink-400'
+                    : 'bg-zinc-900/80 text-zinc-200 border-zinc-800 hover:border-pink-500/40'
+                }`}
+              >
+                {isLooping ? <Pause size={12} /> : <Play size={12} />}
+                <span>{isLooping ? 'Pause' : 'Loop'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleReset}
+                className="flex items-center justify-center gap-1 px-2 py-2 rounded-xl font-semibold bg-zinc-900/80 text-zinc-300 border border-zinc-800 hover:border-zinc-600 hover:text-white transition-all cursor-pointer"
+              >
+                <RotateCcw size={12} />
+                <span>Reset</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

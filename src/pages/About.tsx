@@ -8,14 +8,6 @@ import { Helmet } from 'react-helmet-async';
  * Tells the story of hifi_codeit and introduces the web expert team.
  */
 const About: React.FC = () => {
-  // Animation variants for sections
-  const fadeInUp = {
-    initial: { opacity: 0, y: 30 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.8, ease: "easeOut" }
-  };
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -49,6 +41,7 @@ const About: React.FC = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
+            data-scroll-text="hero-parallax"
             className="max-w-3xl"
           >
             <motion.h1 
@@ -70,12 +63,12 @@ const About: React.FC = () => {
       {/* Team Introduction Section - NEW */}
       <section className="py-24 bg-zinc-950/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div {...fadeInUp} className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-black mb-4">Meet the Minds</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto italic text-lg">
+          <div className="text-center mb-16">
+            <h2 data-scroll-text="split-words" className="text-3xl md:text-5xl font-black mb-4">Meet the Minds</h2>
+            <p data-scroll-text="reveal" className="text-gray-400 max-w-2xl mx-auto italic text-lg">
               "We're a team of web experts who decided to stop waiting for opportunities and start building them."
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -130,14 +123,14 @@ const About: React.FC = () => {
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <motion.div {...fadeInUp}>
+            <div>
               <div className="flex items-center space-x-4 mb-6">
                 <div className="p-3 bg-purple-600/20 rounded-2xl text-purple-500">
                   <Rocket size={24} />
                 </div>
-                <h2 className="text-2xl font-bold">Our Mission</h2>
+                <h2 data-scroll-text="split-words" className="text-2xl font-bold">Our Mission</h2>
               </div>
-              <p className="text-gray-400 text-lg leading-relaxed mb-8">
+              <p data-scroll-text="reveal" className="text-gray-400 text-lg leading-relaxed mb-8">
                 We empower startups and small business owners by removing the technical barriers to entry. Our goal is to provide professional-grade web and brand services that were previously only accessible to big corporations.
               </p>
 
@@ -145,12 +138,12 @@ const About: React.FC = () => {
                 <div className="p-3 bg-blue-600/20 rounded-2xl text-blue-500">
                   <Target size={24} />
                 </div>
-                <h2 className="text-2xl font-bold">Who We Serve</h2>
+                <h2 data-scroll-text="split-words" className="text-2xl font-bold">Who We Serve</h2>
               </div>
-              <p className="text-gray-400 text-lg leading-relaxed">
+              <p data-scroll-text="reveal" className="text-gray-400 text-lg leading-relaxed">
                 Whether you're launching a local bakery, starting a tech venture, or building a personal brand, we are your digital partner. We specialize in working with individuals who are just starting out.
               </p>
-            </motion.div>
+            </div>
 
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}

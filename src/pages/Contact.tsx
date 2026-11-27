@@ -45,6 +45,7 @@ const Contact: React.FC = () => {
               variants={containerVariants}
               initial="hidden"
               animate="visible"
+              data-scroll-text="hero-parallax"
               className="space-y-8"
             >
               <motion.h1 
@@ -66,7 +67,7 @@ const Contact: React.FC = () => {
                 variants={textFadeVariants}
                 className="p-8 bg-zinc-900/50 rounded-[32px] border border-zinc-800/80 glass-card-glow"
               >
-                <p className="text-xl font-bold text-white mb-2 leading-relaxed">
+                <p data-scroll-text="reveal" className="text-xl font-bold text-white mb-2 leading-relaxed">
                   "For more queries related contact us on social links or mail us"
                 </p>
                 <p className="text-gray-500 italic text-sm">
