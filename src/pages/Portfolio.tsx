@@ -39,6 +39,15 @@ const Portfolio: React.FC = () => {
       isLive: true
     },
     {
+      title: "GADGET ZONE",
+      category: "Custom PCs & Tech E-Commerce",
+      description: "An e-commerce storefront for premium custom PC builds, computer components, laptop accessories, repairs, and technical services — crafted with fast browsing, responsive product showcases, and a modern customer-first experience.",
+      image: "https://www.gzones.in/assets/Gadgetzone-BmFq8XcS.png",
+      link: "https://www.gzones.in/",
+      tags: ["E-Commerce", "Custom PCs", "React"],
+      isLive: true
+    },
+    {
       title: "Eternal Moments Studio",
       category: "Luxury Wedding Photography Portfolio",
       description: "A high-end wedding photography & planning portfolio website with cinematic aesthetics. Features rich Playfair Display typography, curated gallery layouts, and a seamless booking-inquiry experience designed to convert high-value clients.",

@@ -62,7 +62,7 @@ const Services: React.FC = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-b from-black to-zinc-950">
+      <section className="py-24 bg-gradient-to-b from-black/40 to-zinc-950/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
