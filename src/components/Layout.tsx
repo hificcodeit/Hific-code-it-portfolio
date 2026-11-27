@@ -3,12 +3,12 @@ import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import VantaHalo from './VantaHalo';
+import ImageSequenceBackground from './ImageSequenceBackground';
 
 /**
  * Layout Component
  * Wraps all pages with the standard Navbar and Footer.
- * Incorporates the interactive Vanta.js Halo 3D WebGL background and smooth page transitions.
+ * Incorporates the GSAP + HTML5 Canvas Image Sequence background and smooth page transitions.
  */
 interface LayoutProps {
   children: React.ReactNode;
@@ -19,8 +19,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#05020d] text-white selection:bg-purple-500/30 relative overflow-hidden">
-      {/* Global Interactive 3D Vanta Halo Background across all pages */}
-      <VantaHalo />
+      {/* Global GSAP + HTML5 Canvas Image Sequence Background across all pages */}
+      <ImageSequenceBackground />
 
       <Navbar />
 
